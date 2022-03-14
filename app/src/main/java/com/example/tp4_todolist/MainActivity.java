@@ -1,8 +1,11 @@
 package com.example.tp4_todolist;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -22,23 +25,50 @@ public class MainActivity extends AppCompatActivity {
 
     ListView toDoList;
     Button btnAdd;
-    private ArrayList<String> toDo;
+    String text[] = {"OUI","NON","oui"};
+    ArrayAdapter<String> adapter;
+    ArrayList<String> toDo = new ArrayList<String>(Arrays.asList(text));
+
+    private final static int MY_REQUEST_CODE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String text[] = {"OUI","NON","oui"};
-        toDo = new ArrayList<>(Arrays.asList(text));
         toDoList = (ListView) findViewById(R.id.toDoList);
+        btnAdd = (Button) findViewById(R.id.btnAdd);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice,toDo);
 
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, (List<String>) toDo);
         toDoList.setAdapter(adapter);
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,AddActivity.class);
+                startActivityForResult(intent, MY_REQUEST_CODE);
+            }
+        });
+
+
         main();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        System.out.println(resultCode);
+        if (resultCode == Activity.RESULT_OK){
+            if(requestCode == MY_REQUEST_CODE){
+                String newAct = data.getStringExtra("value");
+                System.out.println(newAct);
+                toDo.add(newAct);
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
 
     public void main(){
 
@@ -56,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
 
 
     @Override
