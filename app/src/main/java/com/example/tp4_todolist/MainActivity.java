@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     ListView toDoList;
     Button btnAdd;
-    String text[] = {"OUI","NON","oui"};
+    String text[] = {"Sacar al perro","comprar el pan","revisa el correo de la salle","preparar reuniones del día","hacer ejercicio"};
     ArrayAdapter<String> adapter;
     ArrayList<String> toDo = new ArrayList<String>(Arrays.asList(text));
 
@@ -92,14 +91,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
         return true;
-        //return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if(id==R.id.item_done){
-            String itemSelected ="Selected items: \n";
+            String itemSelected ="Activity done: \n";
 
             for(int i=0;i < toDoList.getCount();i++){
                 if(toDoList.isItemChecked(i)){
